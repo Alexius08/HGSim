@@ -256,7 +256,6 @@ Public Class frmSpecialEventEdit
                         .Items.Add("Other Death")
                         If ctr2 > 0 Then .Visible = False
                         .Enabled = False
-                        'AddHandler .SelectedIndexChanged, AddressOf cmbDeathType_SelectedIndexChanged
                     End With
                     SpecialEventOutcome(ctr).Controls.Add(cmbDeathType(ctr - 1)(ctr2))
                 Next

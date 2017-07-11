@@ -406,49 +406,29 @@ Module MainModule
             End With
         Next
 
-        ReDim DefaultBloodbath(27)
-        For ctr = 0 To 27
-            DefaultBloodbath(ctr) = ArenaEvent(ctr)
+        Dim defaultlist As List(Of List(Of GameEvent)) = New List(Of List(Of GameEvent))
+
+        For ctr = 0 To 7
+            defaultlist.Add(New List(Of GameEvent))
         Next
 
-        Dim templist As New List(Of GameEvent)
-        For Each member In ArenaEvent
-            If member.EventScope Mod 2 = 1 And member.KillCount > 0 Then templist.Add(member)
-        Next
-        DefaultBloodbathFatal = (From member In templist Order By ((1 + member.PlayerCount) * (member.PlayerCount / 2) - (member.PlayerCount - member.KillCount)) Select member).ToArray
-
-        templist.Clear()
-        For Each member In ArenaEvent
-            Dim currentscope = member.EventScope
-            If currentscope >= 8 Then currentscope = currentscope - 8
-            If currentscope >= 4 Then currentscope = currentscope - 4
-            If currentscope >= 2 And member.KillCount = 0 Then templist.Add(member)
-        Next
-        DefaultDay = (From member In templist Order By (member.PlayerCount) Select member).ToArray
-
-        templist.Clear()
-        For Each member In ArenaEvent
-            If If(member.EventScope > 7, member.EventScope - 8, member.EventScope) > 4 And member.KillCount > 0 Then templist.Add(member)
-        Next
-        DefaultNightFatal = (From member In templist Order By ((1 + member.PlayerCount) * (member.PlayerCount / 2) - (member.PlayerCount - member.KillCount)) Select member).ToArray
-        DefaultDayFatal = DefaultNightFatal
-
-        templist.Clear()
-        For Each member In ArenaEvent
-            If If(member.EventScope > 7, member.EventScope - 8, member.EventScope) >= 4 And member.KillCount > 0 Then templist.Add(member)
-        Next
-        DefaultNight = (From member In templist Order By (member.PlayerCount) Select member).ToArray
-
-        ReDim DefaultFeast(10)
-        For ctr = 112 To 122
-            DefaultFeast(ctr - 112) = ArenaEvent(ctr)
+        For Each entry In ArenaEvent
+            Dim flags As String = Convert.ToString(entry.EventScope, 2).PadLeft(4, "0")
+            For ctr = 0 To 3
+                If flags.Chars(ctr) = "1" Then defaultlist(ctr + If(entry.KillCount = 0, 0, 1) * 4).Add(entry)
+            Next
         Next
 
-        templist.Clear()
-        For Each member In ArenaEvent
-            If member.EventScope > 7 And member.KillCount > 0 Then templist.Add(member)
-        Next
-        DefaultFeastFatal = (From member In templist Order By ((1 + member.PlayerCount) * (member.PlayerCount / 2) - (member.PlayerCount - member.KillCount)) Select member).ToArray
+        DefaultFeast = (From member In defaultlist(0) Order By member.PlayerCount Select member).ToArray
+        DefaultNight = (From member In defaultlist(1) Order By member.PlayerCount Select member).ToArray
+        DefaultDay = (From member In defaultlist(2) Order By member.PlayerCount Select member).ToArray
+        DefaultBloodbath = (From member In defaultlist(3) Order By member.PlayerCount Select member).ToArray
+
+        DefaultFeastFatal = (From member In defaultlist(4) Order By ((1 + member.PlayerCount) * (member.PlayerCount / 2) - (member.PlayerCount - member.KillCount)) Select member).ToArray
+        DefaultNightFatal = (From member In defaultlist(5) Order By ((1 + member.PlayerCount) * (member.PlayerCount / 2) - (member.PlayerCount - member.KillCount)) Select member).ToArray
+        DefaultDayFatal = (From member In defaultlist(6) Order By ((1 + member.PlayerCount) * (member.PlayerCount / 2) - (member.PlayerCount - member.KillCount)) Select member).ToArray
+        DefaultBloodbathFatal = (From member In defaultlist(7) Order By ((1 + member.PlayerCount) * (member.PlayerCount / 2) - (member.PlayerCount - member.KillCount)) Select member).ToArray
+
     End Sub
     Public Sub ReadEventFile()
         Dim rawfile As String = My.Computer.FileSystem.ReadAllText(IO.Directory.GetCurrentDirectory & "\events.txt")
@@ -740,37 +720,17 @@ Module MainModule
     End Sub
     Public Sub SeparateEvents()
         For Each entry In ArenaEvent
-            Dim temp As Byte = entry.EventScope
-            If temp >= 8 Then
-                If entry.KillCount = 0 Then
-                    CollectNormalEvent(entry, FeastEventColl)
-                Else
-                    CollectFatalEvent(entry, FeastFatalColl)
-                End If
-                temp = temp - 8
-            End If
-            If temp >= 4 Then
-                If entry.KillCount = 0 Then
-                    CollectNormalEvent(entry, NightEventColl)
-                Else
-                    CollectFatalEvent(entry, NightFatalColl)
-                End If
-                temp = temp - 4
-            End If
-            If temp >= 2 Then
-                If entry.KillCount = 0 Then
-                    CollectNormalEvent(entry, DayEventColl)
-                Else
-                    CollectFatalEvent(entry, DayFatalColl)
-                End If
-                temp = temp - 2
-            End If
-            If temp = 1 Then
-                If entry.KillCount = 0 Then
-                    CollectNormalEvent(entry, BloodbathEventColl)
-                Else
-                    CollectFatalEvent(entry, BloodbathFatalColl)
-                End If
+            Dim flags As String = Convert.ToString(entry.EventScope, 2).PadLeft(4, "0")
+            If entry.KillCount = 0 Then
+                If flags.Chars(0) = "1" Then CollectNormalEvent(entry, FeastEventColl)
+                If flags.Chars(1) = "1" Then CollectNormalEvent(entry, NightEventColl)
+                If flags.Chars(2) = "1" Then CollectNormalEvent(entry, DayEventColl)
+                If flags.Chars(3) = "1" Then CollectNormalEvent(entry, BloodbathEventColl)
+            Else
+                If flags.Chars(0) = "1" Then CollectFatalEvent(entry, FeastFatalColl)
+                If flags.Chars(1) = "1" Then CollectFatalEvent(entry, NightFatalColl)
+                If flags.Chars(2) = "1" Then CollectFatalEvent(entry, DayFatalColl)
+                If flags.Chars(3) = "1" Then CollectFatalEvent(entry, BloodbathFatalColl)
             End If
         Next
     End Sub

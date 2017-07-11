@@ -13,24 +13,15 @@ Public Class frmEvents
     Private Sub lbxEventList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbxEventList.SelectedIndexChanged
         If lbxEventList.SelectedIndex > -1 Then
             With ArenaEvent(lbxEventList.SelectedIndex)
-                Dim temp As String = "", ctr As Byte = .EventScope
-                If .EventScope >= 8 Then
-                    temp = "Feast"
-                    ctr = ctr - 8
-                End If
-                If ctr >= 4 Then
-                    temp = If(Len(temp) > 0, "Night, " & temp, "Night")
-                    ctr = ctr - 4
-                End If
-                If ctr >= 2 Then
-                    temp = If(Len(temp) > 0, "Day, " & temp, "Day")
-                    ctr = ctr - 2
-                End If
-                If ctr = 1 Then temp = If(Len(temp) > 0, "Bloodbath, " & temp, "Bloodbath")
+                Dim temp As String = "", flags As String = Convert.ToString(.EventScope, 2).PadLeft(4, "0")
+                If flags.Chars(0) = "1" Then temp = "Feast"
+                If flags.Chars(1) = "1" Then temp = If(Len(temp) > 0, "Night, " & temp, "Night")
+                If flags.Chars(2) = "1" Then temp = If(Len(temp) > 0, "Day, " & temp, "Day")
+                If flags.Chars(3) = "1" Then temp = If(Len(temp) > 0, "Bloodbath, " & temp, "Bloodbath")
 
                 lblEventDesc.Text = .EventText & vbCrLf & "Event scope: " & temp & vbCrLf & "Killer:"
 
-                ctr = 0
+                Dim ctr As Integer = 0
                 For ctr2 = 0 To 5
                     If .P(ctr2).IsKiller Then
                         lblEventDesc.Text = lblEventDesc.Text & If(ctr > 0, ", ", " ") & "Player" & CStr(ctr2 + 1)

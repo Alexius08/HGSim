@@ -21,4 +21,8 @@ Public Class frmSplash
         ini.AddSection("Settings").AddKey("ShowRecentDeaths").SetValue(ShowRecentDeaths)
         ini.Save(inipath)
     End Sub
+
+    Private Sub frmSplash_GotFocus(sender As Object, e As EventArgs) Handles Me.GotFocus
+        GC.Collect()
+    End Sub
 End Class
