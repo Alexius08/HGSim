@@ -244,15 +244,10 @@
                                 frmTribEdit.picDeadTribute.Image = Image.FromFile(.DeathPicture)
                         End Select
                     End With
-                    frmTribEdit.Tag = CType(sender, ComboBox).Tag
-                    frmTribEdit.Show() 'Don't switch to modal
-                    Me.Enabled = False
-                Else
-                    frmTribEdit.Tag = CType(sender, ComboBox).Tag
-                    frmTribEdit.Show() 'Don't switch to modal
-                    Me.Enabled = False
                 End If
-
+                frmTribEdit.Tag = CType(sender, ComboBox).Tag
+                frmTribEdit.Show() 'Don't switch to modal
+                Me.Enabled = False
             End If
         End If
     End Sub
