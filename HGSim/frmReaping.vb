@@ -231,6 +231,8 @@
                                 frmTribEdit.cbxGender.SelectedIndex = 1
                             Case "N"
                                 frmTribEdit.cbxGender.SelectedIndex = 2
+                            Case "P"
+                                frmTribEdit.cbxGender.SelectedIndex = 3
                         End Select
                         Select Case .DeathPicture
                             Case "BW"

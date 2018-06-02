@@ -292,14 +292,14 @@ Public Class frmArena
             With ChosenPlayer(i)
                 Result = Replace(Result, "(Player" & i + 1 & ")", .Nickname)
                 'Pronoun replacement section
-                Result = Replace(Result, "(he/she" & i + 1 & ")", If(.Gender = "M", "he", If(.Gender = "F", "she", "it")))
-                Result = Replace(Result, "(He/She" & i + 1 & ")", If(.Gender = "M", "He", If(.Gender = "F", "She", "It")))
-                Result = Replace(Result, "(his/her" & i + 1 & ")", If(.Gender = "M", "his", If(.Gender = "F", "her", "its")))
-                Result = Replace(Result, "(His/Her" & i + 1 & ")", If(.Gender = "M", "His", If(.Gender = "F", "Her", "Its")))
-                Result = Replace(Result, "(him/her" & i + 1 & ")", If(.Gender = "M", "him", If(.Gender = "F", "her", "it")))
-                Result = Replace(Result, "(Him/Her" & i + 1 & ")", If(.Gender = "M", "Him", If(.Gender = "F", "Her", "It")))
-                Result = Replace(Result, "(himself/herself" & i + 1 & ")", If(.Gender = "M", "himself", If(.Gender = "F", "herself", "itself")))
-                Result = Replace(Result, "(Himself/Herself" & i + 1 & ")", If(.Gender = "M", "Himself", If(.Gender = "F", "Herself", "Itself")))
+                Result = Replace(Result, "(he/she" & i + 1 & ")", If(.Gender = "M", "he", If(.Gender = "F", "she", If(.Gender = "N", "it", "they"))))
+                Result = Replace(Result, "(He/She" & i + 1 & ")", If(.Gender = "M", "He", If(.Gender = "F", "She", If(.Gender = "N", "It", "They"))))
+                Result = Replace(Result, "(his/her" & i + 1 & ")", If(.Gender = "M", "his", If(.Gender = "F", "her", If(.Gender = "N", "its", "their"))))
+                Result = Replace(Result, "(His/Her" & i + 1 & ")", If(.Gender = "M", "His", If(.Gender = "F", "Her", If(.Gender = "N", "Its", "Their"))))
+                Result = Replace(Result, "(him/her" & i + 1 & ")", If(.Gender = "M", "him", If(.Gender = "F", "her", If(.Gender = "N", "it", "them"))))
+                Result = Replace(Result, "(Him/Her" & i + 1 & ")", If(.Gender = "M", "Him", If(.Gender = "F", "Her", If(.Gender = "N", "It", "Them"))))
+                Result = Replace(Result, "(himself/herself" & i + 1 & ")", If(.Gender = "M", "himself", If(.Gender = "F", "herself", If(.Gender = "N", "itself", "themselves"))))
+                Result = Replace(Result, "(Himself/Herself" & i + 1 & ")", If(.Gender = "M", "Himself", If(.Gender = "F", "Herself", If(.Gender = "N", "Itself", "Themselves"))))
             End With
         Next
         Return Result

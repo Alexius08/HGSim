@@ -91,7 +91,7 @@ Partial Class frmTribEdit
         Me.cbxGender.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append
         Me.cbxGender.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
         Me.cbxGender.FormattingEnabled = True
-        Me.cbxGender.Items.AddRange(New Object() {"Male", "Female", "Neuter"})
+        Me.cbxGender.Items.AddRange(New Object() {"Male", "Female", "Neuter", "Plural"})
         Me.cbxGender.Location = New System.Drawing.Point(57, 55)
         Me.cbxGender.Name = "cbxGender"
         Me.cbxGender.Size = New System.Drawing.Size(121, 21)
