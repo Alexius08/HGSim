@@ -28,6 +28,7 @@ Partial Class frmArena
         Me.btnNext = New System.Windows.Forms.Button()
         Me.btnPrev = New System.Windows.Forms.Button()
         Me.btnShowScore = New System.Windows.Forms.Button()
+        Me.btnSkipToEnd = New System.Windows.Forms.Button()
         Me.pnlEventDisplay.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -85,11 +86,21 @@ Partial Class frmArena
         Me.btnShowScore.Text = "Show Current Score"
         Me.btnShowScore.UseVisualStyleBackColor = True
         '
+        'btnSkipToEnd
+        '
+        Me.btnSkipToEnd.Location = New System.Drawing.Point(633, 286)
+        Me.btnSkipToEnd.Name = "btnSkipToEnd"
+        Me.btnSkipToEnd.Size = New System.Drawing.Size(98, 29)
+        Me.btnSkipToEnd.TabIndex = 6
+        Me.btnSkipToEnd.Text = "Skip to End"
+        Me.btnSkipToEnd.UseVisualStyleBackColor = True
+        '
         'frmArena
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(836, 356)
+        Me.Controls.Add(Me.btnSkipToEnd)
         Me.Controls.Add(Me.btnShowScore)
         Me.Controls.Add(Me.btnPrev)
         Me.Controls.Add(Me.btnNext)
@@ -109,4 +120,5 @@ Partial Class frmArena
     Friend WithEvents btnPrev As Button
     Friend WithEvents lblRoundDesc As Label
     Friend WithEvents btnShowScore As Button
+    Friend WithEvents btnSkipToEnd As Button
 End Class

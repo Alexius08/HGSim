@@ -2,7 +2,7 @@
 Public Class frmArena
     Public RecentDeaths() As Integer
     Dim LiveTribute() As Player, ctr, DayCtr, LiveTributes, CurrentRound As Integer, HasFeast, IsDay As Boolean, ChosenEvent As GameEvent
-    Dim btnRound() As Button, lblEventDesc()() As Label, picTribute()() As PictureBox
+    Dim btnRound() As Button, lblEventDesc()() As Label, picTribute()() As PictureBox, RushMode As Boolean
     Private Sub btnPrev_Click(sender As Object, e As EventArgs) Handles btnPrev.Click
         HideRoundResult()
         CurrentRound = CurrentRound - 1
@@ -41,7 +41,7 @@ Public Class frmArena
             ctr = LiveTributes
 
             If LiveTributes = 1 Then
-                If ShowRecentDeaths Then frmRecentDeaths.ShowDialog()
+                If ShowRecentDeaths And Not RushMode Then frmRecentDeaths.ShowDialog()
                 With ChosenEvent
                     .EventText = "(Player1) is the winner!"
                     .PlayerCount = 1
@@ -75,7 +75,7 @@ Public Class frmArena
                             DayRound()
                             IsDay = False
                         Else
-                            If ShowRecentDeaths Then frmRecentDeaths.ShowDialog() 'Display recent deaths if option is enabled
+                            If ShowRecentDeaths And Not RushMode Then frmRecentDeaths.ShowDialog() 'Display recent deaths if option is enabled
                             lblRoundDesc.Visible = False
                             btnRound(CurrentRound).Text = "Night " & DayCtr
                             NightRound()
@@ -256,6 +256,16 @@ Public Class frmArena
 
     Private Sub btnShowScore_Click(sender As Object, e As EventArgs) Handles btnShowScore.Click
         frmScoreboard.ShowDialog()
+    End Sub
+
+    Private Sub btnSkipToEnd_Click(sender As Object, e As EventArgs) Handles btnSkipToEnd.Click
+        RushMode = True
+        Do
+            btnNext_Click(btnNext, e)
+        Loop Until btnRound(UBound(btnRound)).Text = "The Winner"
+        pnlRounds.ScrollControlIntoView(btnRound(UBound(btnRound)))
+        btnSkipToEnd.Enabled = False
+        RushMode = False
     End Sub
 
     Sub ArenaEventRound()
