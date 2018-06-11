@@ -54,6 +54,7 @@ Public Class frmArena
                 lblRoundDesc.Visible = False
                 GenerateEvent()
                 btnNext.Enabled = False
+                btnSkipToEnd.Enabled = False
                 btnRound(CurrentRound).Text = "The Winner"
                 LiveTribute(0).Wins = 1
                 Roster(LiveTribute(0).ID).Wins = 1
