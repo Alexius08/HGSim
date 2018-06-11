@@ -54,10 +54,10 @@ Public Class frmSpecialEventEdit
                         Next
                         If Not HasUnmentionedPlayer Then
                             Dim ExcessPlayerCount As Integer
-                            For ctr = 0 To 5
+                            For ctr = 0 To 3
                                 If nudTribCount(ctr).Value < 6 Then
                                     For ctr2 = nudTribCount(ctr).Value + 1 To 6
-                                        If txtEventText(ctr).Text.IndexOf("(Player" & ctr2 & ")") > -1 Then ExcessPlayerCount = ExcessPlayerCount + 1
+                                        If txtEventText(ctr + 2).Text.IndexOf("(Player" & ctr2 & ")") > -1 Then ExcessPlayerCount = ExcessPlayerCount + 1
                                     Next
                                 End If
                                 If ExcessPlayerCount > 0 Then
@@ -92,9 +92,9 @@ Public Class frmSpecialEventEdit
                                                 .KillCount = KilledCount(ctr + 1)
                                                 .IsSharedKill = If(ctr > 0, chkIsKillShared(ctr - 1).Checked, False)
                                                 If ctr > 0 Then
-                                                    For ctr2 = 0 To 5
+                                                    For ctr2 = 0 To .PlayerCount - 1
                                                         .P(ctr2).IsKiller = chkIsTribKiller(ctr - 1)(ctr2).Checked
-                                                        .P(ctr2).DeathType = cmbDeathType(ctr - 1)(ctr2).SelectedIndex + 1
+                                                        .P(ctr2).DeathType = cmbDeathType(ctr)(ctr2).SelectedIndex + 1
                                                     Next
                                                 Else
                                                     .P(ctr).IsKiller = False
@@ -292,7 +292,7 @@ Public Class frmSpecialEventEdit
     End Sub
 
     Private Sub nudTribCount_ValueChanged(sender As Object, e As EventArgs)
-        PlayerCount(CType(sender, NumericUpDown).Tag) = CType(sender, NumericUpDown).Value
+        PlayerCount(2 + CType(sender, NumericUpDown).Tag) = CType(sender, NumericUpDown).Value
         For ctr = 0 To 5
             lblTribute(CType(sender, NumericUpDown).Tag + 1)(ctr).Visible = ctr < CType(sender, NumericUpDown).Value
             chkIsTribKilled(CType(sender, NumericUpDown).Tag)(ctr).Visible = ctr < CType(sender, NumericUpDown).Value
@@ -304,9 +304,9 @@ Public Class frmSpecialEventEdit
         If CType(sender, NumericUpDown).Value = 1 And chkIsTribKilled(CType(sender, NumericUpDown).Tag)(0).Checked Then cmbDeathType(CType(sender, NumericUpDown).Tag + 1)(0).SelectedIndex = 1
     End Sub
     Private Sub chkIsTribKiller_CheckChange(sender As Object, e As EventArgs)
-        KillerCount(CType(sender, CheckBox).Tag) = 0
+        KillerCount(2 + CType(sender, CheckBox).Tag) = 0
         For Each chk In chkIsTribKiller(CType(sender, CheckBox).Tag)
-            If chk.Checked Then KillerCount(CType(sender, CheckBox).Tag) = KillerCount(CType(sender, CheckBox).Tag) + 1
+            If chk.Checked Then KillerCount(2 + CType(sender, CheckBox).Tag) = KillerCount(2 + CType(sender, CheckBox).Tag) + 1
         Next
         If KillerCount(CType(sender, CheckBox).Tag) > 1 Then
             If Not chkIsKillShared(CType(sender, CheckBox).Tag).Enabled Then
