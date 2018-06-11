@@ -344,11 +344,8 @@ Public Class frmSpecialEventEdit
     End Sub
 
     Private Sub frmSpecialEventEdit_Closed(sender As Object, e As EventArgs) Handles Me.Closed
-        If Not NewEventAdded Then
-            frmEvents.lbxSpecialArenaEvents.Items.Clear()
-            For ctr = 0 To UBound(SpecialArenaEvent)
-                frmEvents.lbxSpecialArenaEvents.Items.Add(SpecialArenaEvent(ctr).DescriptionText)
-            Next
+        If NewEventAdded Then
+            frmEvents.lbxSpecialArenaEvents.Items.Add(SpecialArenaEvent(UBound(SpecialArenaEvent)).DescriptionText)
         End If
     End Sub
 End Class
