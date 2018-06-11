@@ -27,6 +27,7 @@ Partial Class frmReaping
         Me.btnGo = New System.Windows.Forms.Button()
         Me.btnStop = New System.Windows.Forms.Button()
         Me.pnlReaping = New System.Windows.Forms.Panel()
+        Me.btnRandom = New System.Windows.Forms.Button()
         CType(Me.nudTribNumSel, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -77,6 +78,15 @@ Partial Class frmReaping
         Me.pnlReaping.TabIndex = 4
         Me.pnlReaping.Visible = False
         '
+        'btnRandom
+        '
+        Me.btnRandom.Location = New System.Drawing.Point(147, 310)
+        Me.btnRandom.Name = "btnRandom"
+        Me.btnRandom.Size = New System.Drawing.Size(69, 23)
+        Me.btnRandom.TabIndex = 5
+        Me.btnRandom.Text = "Randomize"
+        Me.btnRandom.UseVisualStyleBackColor = True
+        '
         'frmReaping
         '
         Me.AcceptButton = Me.btnGo
@@ -84,6 +94,7 @@ Partial Class frmReaping
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(761, 349)
+        Me.Controls.Add(Me.btnRandom)
         Me.Controls.Add(Me.btnStop)
         Me.Controls.Add(Me.btnGo)
         Me.Controls.Add(Me.nudTribNumSel)
@@ -103,4 +114,5 @@ Partial Class frmReaping
     Friend WithEvents btnGo As Button
     Friend WithEvents btnStop As Button
     Friend WithEvents pnlReaping As Panel
+    Friend WithEvents btnRandom As Button
 End Class

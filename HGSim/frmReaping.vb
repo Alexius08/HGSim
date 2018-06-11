@@ -110,6 +110,7 @@
                 TribPic(ctr).Image.Dispose()
                 TribPic(ctr).Dispose()
             Next
+            pnlReaping.Controls.Clear()
             pnlReaping.Hide()
             ClearTempFolder()
             Hide()
@@ -118,6 +119,7 @@
 
     End Sub
     Private Sub frmReaping_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Randomize()
         btnGo.Text = "Preview"
         btnStop.Text = "Cancel"
         ReDim TributePicker(47)
@@ -140,6 +142,7 @@
                 .Items.Add("Add new tribute")
                 .Items.Add("Choose from tribute list")
                 .Items.Add("Edit current tribute")
+                .Items.Add("Select random tribute")
                 .Tag = ctr
                 AddHandler .SelectedIndexChanged, AddressOf TribPicker_SelectedIndexChanged
             End With
@@ -170,6 +173,12 @@
         End If
     End Sub
 
+    Private Sub btnRandom_Click(sender As Object, e As EventArgs) Handles btnRandom.Click
+        For ctr = 0 To nudTribNumSel.Value - 1
+            TributePicker(ctr).SelectedIndex = 3
+        Next
+    End Sub
+
     Private Sub TribPicker_SelectedIndexChanged(sender As Object, e As EventArgs)
         If CType(sender, ComboBox).SelectedIndex = 1 Then
             With frmStats
@@ -181,6 +190,18 @@
                 .Text = "Choose from existing tribute"
             End With
             Me.Enabled = False
+        ElseIf CType(sender, ComboBox).SelectedIndex = 3 Then
+            Dim AvailableTributes As List(Of Integer) = New List(Of Integer)
+            For ctr = 1 To UBound(Tribute)
+                If Not ChosenTribute.Contains(ctr) Then AvailableTributes.Add(ctr)
+            Next
+            If AvailableTributes.Count > 0 Then
+                ChosenTribute(CType(sender, ComboBox).Tag) = AvailableTributes(Math.Floor(Rnd() * AvailableTributes.Count))
+                Debug.Print(Tribute(ChosenTribute(CType(sender, ComboBox).Tag)).Name + " (#" + CStr(ChosenTribute(CType(sender, ComboBox).Tag)) + ") is chosen")
+                CType(sender, ComboBox).Text = Tribute(ChosenTribute(CType(sender, ComboBox).Tag)).Name
+            Else
+                MsgBox("No more tributes left")
+            End If
         ElseIf CType(sender, ComboBox).SelectedIndex <> -1 Then
             frmTribEdit.Text = CType(sender, ComboBox).Text
             If CType(sender, ComboBox).SelectedIndex = 2 Then
